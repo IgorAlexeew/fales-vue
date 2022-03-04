@@ -22,7 +22,7 @@ export default {
   components: {FooterBlock, FalesInfo, AsideComponent, ArticlesView, EncNav, LogoComponent },
   data() {
     return {
-      currentAlpha: 0
+      current_alpha: 0
     }
   }
 }
@@ -42,6 +42,7 @@ export default {
   --nav-active-color: #000;
   --light-blue-gray: #A1B1B5;
   --font-color: #4E6068;
+  --font-color-contrast: #272828;
   --link-color: #4E6068;
   --link-color-hover: #303e44;
   --article-font-color: #000;

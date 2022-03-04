@@ -33,7 +33,7 @@ footer.site {
   width: 100%;
   height: 170px;
   border-radius: 15px;
-  margin: 10px 0;
+  margin: 10px 0 20px 0;
   display: flex;
   align-items: center;
   color: var(--footer-font-color);

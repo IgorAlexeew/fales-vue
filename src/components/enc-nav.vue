@@ -1,7 +1,7 @@
 <template>
   <nav class="enc-navigation">
     <div class="alphas-list">
-      <a class="alpha" :class="{selected: index === currentAlpha}" v-on:click="setAlpha" v-for="(alpha, index) in alphas" :key="index" :alpha="index">{{ alpha }}</a>
+      <a class="alpha" :class="{selected: index === current_alpha}" v-on:click="setAlpha" v-for="(alpha, index) in alphas" :key="index" :alpha="index">{{ alpha }}</a>
     </div>
     <search-field/>
   </nav>
@@ -15,7 +15,7 @@ export default {
   props: { },
   data() {
     return {
-      currentAlpha: 0
+      current_alpha: 0
     }
   },
   computed: {
@@ -35,9 +35,9 @@ export default {
     setAlpha: function (event) {
       event.preventDefault()
       const {currentTarget:target} = event
-      this.currentAlpha = parseInt(target.getAttribute("alpha"))
-      this.$root.currentAlpha = this.currentAlpha
-      console.log(this.currentAlpha)
+      this.current_alpha = parseInt(target.getAttribute("alpha"))
+      this.$root.current_alpha = this.current_alpha
+      console.log(this.current_alpha)
     }
   }
 }

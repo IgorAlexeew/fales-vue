@@ -1,12 +1,21 @@
 <template>
   <section class="articles view">
-    <div class="article" v-for="article in articles" :key="article.term">
-      <div class="definition">
-        <b class="term">{{article.term}}</b> — {{article.description}}
+    <template v-if="articles.length > 0">
+      <div class="article" v-for="article in articles" :key="article.term">
+        <div class="definition">
+          <b class="term">{{article.term}}</b> — {{article.description}}
+        </div>
+        <p class="source">{{article.src}}</p>
       </div>
-      <p class="source">{{article.src}}</p>
+    </template>
+    <div v-else class="empty">Нет слов на данную букву</div>
+    <div class="control">
+      <a @click="set_page" :name="0" href="" class="first">Начало</a>
+      <a @click="set_page" :name="Math.max(current_page - 1, 0)" href="" class="previous">Предыдущая</a>
+      <p class="current">{{current_page+1}}</p>
+      <a @click="set_page" :name="Math.min(current_page + 1, get_pages_count - 1)" href="" class="next">Следующая</a>
+      <a @click="set_page" :name="get_pages_count - 1" href="" class="end">Конец</a>
     </div>
-    <div v-if="!articles" class="empty">Нет слов на данную букву</div>
   </section>
 </template>
 
@@ -19,15 +28,35 @@ export default {
   props: { },
   data() {
     return {
-      all_articles: {
-        0: A_Terms,
-        1: B_Terms
-      }
+      all_articles: [A_Terms, B_Terms],
+      page_size: 10,
+      page_currents: {}
     }
+  },
+  mounted() {
   },
   computed: {
     articles() {
-      return this.all_articles[this.$root.currentAlpha]
+      let array = []
+      for (let i = this.current_page * this.page_size; i < ((this.current_page + 1) * this.page_size); i++) {
+        if (this.all_articles[this.$root.current_alpha][i])
+          array.push(this.all_articles[this.$root.current_alpha][i])
+      }
+      return array
+    },
+    get_pages_count() {
+      return Math.ceil(this.all_articles[this.$root.current_alpha].length / this.page_size)
+    },
+    current_page() {
+      return this.page_currents[this.$root.current_alpha] ?? 0
+    }
+  },
+  methods: {
+    set_page(event) {
+      event.preventDefault()
+      const {currentTarget:target} = event
+      console.log(target.name)
+      this.page_currents[this.$root.current_alpha] = parseInt(target.name)
     }
   }
 }
@@ -58,5 +87,26 @@ export default {
   align-items: center;
   height: 200px;
   color: var(--font-color);
+}
+
+.control {
+  display: flex;
+  justify-content: space-between;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+}
+
+.control a {
+  text-decoration: none;
+  color: var(--link-color);
+  transition: color .3s ease-out;
+}
+
+.control a:hover {
+  color: var(--link-color-hover);
+}
+
+.control p {
+  color: var(--font-color-contrast);
 }
 </style>
