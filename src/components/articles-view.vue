@@ -7,15 +7,15 @@
         </div>
         <p class="source">{{article.src}}</p>
       </div>
+      <div class="control">
+        <a @click="set_page" :name="0" href="" class="first">Начало</a>
+        <a @click="set_page" :name="Math.max(current_page - 1, 0)" href="" class="previous">Предыдущая</a>
+        <p class="current">{{current_page*10 + 1}} — {{Math.min((current_page + 1)*10, terms_count)}}</p>
+        <a @click="set_page" :name="Math.min(current_page + 1, pages_count - 1)" href="" class="next">Следующая</a>
+        <a @click="set_page" :name="pages_count - 1" href="" class="end">Конец</a>
+      </div>
     </template>
     <div v-else class="empty">Нет слов на данную букву</div>
-    <div class="control">
-      <a @click="set_page" :name="0" href="" class="first">Начало</a>
-      <a @click="set_page" :name="Math.max(current_page - 1, 0)" href="" class="previous">Предыдущая</a>
-      <p class="current">{{current_page+1}}</p>
-      <a @click="set_page" :name="Math.min(current_page + 1, get_pages_count - 1)" href="" class="next">Следующая</a>
-      <a @click="set_page" :name="get_pages_count - 1" href="" class="end">Конец</a>
-    </div>
   </section>
 </template>
 
@@ -38,14 +38,20 @@ export default {
   computed: {
     articles() {
       let array = []
-      for (let i = this.current_page * this.page_size; i < ((this.current_page + 1) * this.page_size); i++) {
-        if (this.all_articles[this.$root.current_alpha][i])
-          array.push(this.all_articles[this.$root.current_alpha][i])
+      let current_articles = this.all_articles[this.$root.current_alpha]
+      if (current_articles) {
+        for (let i = this.current_page * this.page_size; i < ((this.current_page + 1) * this.page_size); i++) {
+          if (current_articles[i])
+            array.push(this.all_articles[this.$root.current_alpha][i])
+        }
       }
       return array
     },
-    get_pages_count() {
-      return Math.ceil(this.all_articles[this.$root.current_alpha].length / this.page_size)
+    pages_count() {
+      return Math.ceil(this.all_articles[this.$root.current_alpha]?.length / this.page_size)
+    },
+    terms_count() {
+      return this.all_articles[this.$root.current_alpha]?.length ?? 0
     },
     current_page() {
       return this.page_currents[this.$root.current_alpha] ?? 0
