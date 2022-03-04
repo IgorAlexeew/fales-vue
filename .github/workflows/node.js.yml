@@ -32,4 +32,4 @@ jobs:
     - run: chmod 600 "$HOME/.ssh/key"
     - run: npm ci
     - run: npm run build --if-present
-    - run: cd dist && rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . a0641774@141.8.195.65:/home/a0641774/domains/xn--80akrzl.xn--p1ai
+    - run: cd dist && rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . a0641774@141.8.195.65:/home/a0641774/domains/фалес.рф
